@@ -1,0 +1,59 @@
+// Returns a random DNA base
+const returnRandBase = () => {
+  const dnaBases = ["A", "T", "C", "G"];
+  return dnaBases[Math.floor(Math.random() * 4)];
+};
+
+// Returns a random single strand of DNA containing 15 bases
+const mockUpStrand = () => {
+  const newStrand = [];
+  for (let i = 0; i < 15; i++) {
+    newStrand.push(returnRandBase());
+  }
+  return newStrand;
+};
+pAequorFactory = (num, arr) => {
+  return {
+    _specimenNum: num,
+    _dna: arr,
+    mutate() {
+      let newBase = returnRandBase();
+      let i = Math.floor(Math.random() * 15);
+      // console.log(i)
+      while (this._dna[i] === newBase[0]);
+      this._dna[i] = newBase;
+    },
+    compareDna(arr) {
+      let match = 0;
+      for (let i = 0; i < arr._dna.length; i++) {
+        if (arr._dna[i] == this._dna[i]) {
+          match += 1;
+        }
+      }
+      console.log(
+        "These two specimens are a " + (match / 15) * 100 + "% match"
+      );
+    },
+    willLikelySurvive() {
+      let survive = 0;
+      for(let j = 0; j < this._dna.length; j++) {
+        if (this._dna[j] == 'C' || this._dna[j] == 'G') {
+          survive += 1;
+        }
+        } return survive/15 >= .6 ? true : false
+      } 
+    }
+  };
+
+const survivor = []
+let count = 0
+while (survivor.length < 30) {
+  let testSubject = pAequorFactory(count, mockUpStrand)
+  if (testSubject.willLikelySurvive() == true) {
+    survivor.push(testSubject._specimenNumber)
+    count++
+  }
+}
+
+console.log(survivor);
+
